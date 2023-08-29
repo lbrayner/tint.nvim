@@ -159,7 +159,17 @@ end
 ---@return table<string, any> # highlight definitions
 local function get_global_highlights()
   ---@diagnostic disable-next-line: undefined-field
-  return vim.api.nvim__get_hl_defs and vim.api.nvim__get_hl_defs(0) or vim.api.nvim_get_hl(0, {})
+  local highlights = vim.api.nvim__get_hl_defs and vim.api.nvim__get_hl_defs(0) or vim.api.nvim_get_hl(0, {})
+  for _, hl_group_name in ipairs({
+    "StatusLine",
+    "StatusLineNC",
+    "StatusLineTerm",
+    "StatusLineTermNC",
+    "WinBar",
+    "WinBarNC" }) do
+    highlights[hl_group_name] = nil
+  end
+  return highlights
 end
 
 --- Setup color namespaces such that they can be set per-window
